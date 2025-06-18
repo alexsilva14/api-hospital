@@ -1,24 +1,34 @@
-DROP DATABASE IF EXISTS contacts;
-CREATE DATABASE contacts;
-USE contacts;
+CREATE DATABASE IF NOT EXISTS hospital;
 
-CREATE TABLE IF NOT EXISTS categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+USE hospital;
+
+CREATE TABLE especialidades (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL
 );
 
-INSERT INTO categories (name)
-VALUES ('Família');
-
-CREATE TABLE IF NOT EXISTS contacts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
-    email VARCHAR(255) UNIQUE,
-    phone VARCHAR(255),
-    category_id INT,
-    FOREIGN KEY (category_id) REFERENCES categories(id)
+CREATE TABLE pacientes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  data_nascimento DATE,
+  telefone VARCHAR(20),
+  email VARCHAR(100)
 );
 
-SHOW TABLES;
-DESCRIBE categories;
-DESCRIBE contacts;
+CREATE TABLE profissionais (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  especialidade_id INT,
+  FOREIGN KEY (especialidade_id) REFERENCES especialidades(id)
+);
+
+
+CREATE TABLE atendimentos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  paciente_id INT,
+  profissional_id INT,
+  data DATETIME,
+  observacoes TEXT,
+  FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
+  FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
+);
